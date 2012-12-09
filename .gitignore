@@ -1,0 +1,12 @@
+*.lisp~
+*.fasl
+*.ufasl
+*.ofasl
+*.fas
+*.lx32fsl
+*.lib
+*.abcl
+doc/*.aux
+doc/*.log
+doc/*.out
+doc/*.toc
