@@ -38,7 +38,7 @@
               x-next))))))))
 
 (defun seq->stream (seq &key (thread-safe nil))
-  "Convert the sequence to a lazy stream or return NIL if the sequence is empty."
+  "Convert the sequence to a lazy stream that must always return the same elements."
   (make-stream-seq
    :enum (labels ((traverse (enum)
                     (if (null enum)
