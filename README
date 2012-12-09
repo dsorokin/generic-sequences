@@ -6,6 +6,8 @@ GENERIC-SEQUENCES-ITERATE -- Generic sequence iteration for Common Lisp
 
 GENERIC-SEQUENCES-STREAM -- Lazy streams for Common Lisp
 
+GENERIC-SEQUENCES-TEST -- Unit tests for the generic sequences 
+
 Generic Sequences is a library for Common Lisp. It introduces the generic sequences, 
 which are a hybrid between the ordinary lists, lazy streams and iterable sequences 
 that can be found in other programming languages such as C#, F#, Java and Scala. 
