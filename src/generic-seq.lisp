@@ -59,16 +59,35 @@
   "Represents the basic sequence that is defined only by its enumerator."
   delayed-enum)
 
-(defmethod seqp ((enum basic-seq))
+(defmethod seqp ((seq basic-seq))
   t)
 
-(defmethod seq-enum ((enum basic-seq))
-  (funcall (basic-seq-delayed-enum enum)))
+(defmethod seq-enum ((seq basic-seq))
+  (funcall (basic-seq-delayed-enum seq)))
 
 (defmacro make-seq (&body enum)
   "Create a sequence by specifying its enumerator."
   `(make-basic-seq
     :delayed-enum (lambda () ,@enum)))
+
+;;;
+;;; Delayed sequence
+;;;
+
+(defstruct delayed-seq
+  "The delayed sequence."
+  delayed-seq)
+
+(defmethod seqp ((seq delayed-seq))
+  t)
+
+(defmethod seq-enum ((seq delayed-seq))
+  (seq-enum (funcall (delayed-seq-delayed-seq seq))))
+
+(defmacro delay-seq (seq)
+  "Delay the sequence."
+  `(make-delayed-seq
+    :delayed-seq (lambda () ,seq)))
 
 ;;;
 ;;; Basic functions

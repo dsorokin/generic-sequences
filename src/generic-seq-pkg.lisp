@@ -12,6 +12,7 @@
    #:enum-cdr
    #:enum-append
    #:make-seq
+   #:delay-seq
    #:seqp
    #:seq-enum
    #:seq->list
