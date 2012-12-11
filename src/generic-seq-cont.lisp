@@ -12,10 +12,12 @@
   `(make-seq (with-enum/cc ,@body)))
 
 (defmacro yield/cc (item)
-  `(call/cc (lambda (k) (enum-cons ,item (funcall k)))))
+  (let ((k (gensym)))
+    `(call/cc (lambda (,k) (enum-cons ,item (funcall ,k))))))
 
 (defmacro yield-enum/cc (enum)
-  `(call/cc (lambda (k) (enum-append ,enum (funcall k)))))
+  (let ((k (gensym)))
+    `(call/cc (lambda (,k) (enum-append ,enum (funcall ,k))))))
 
 (defmacro yield-seq/cc (seq)
   `(yield-enum/cc (seq-enum ,seq)))
