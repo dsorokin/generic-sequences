@@ -30,14 +30,14 @@
 (defun force (delayed-exp)
   (funcall delayed-exp))
 
-;;(defmacro letrec (((name value)) &body body)
+;;(defmacro reclet (((name value)) &body body)
 ;;  (let ((x (gensym)))
 ;;    `(let ((,x (cons nil nil)))
 ;;       (symbol-macrolet ((,name (force (car ,x))))
 ;;         (setf (car ,x) (delay ,value))
 ;;         ,@body))))
 
-(defmacro letrec (decls &body body)
+(defmacro reclet (decls &body body)
   (labels
       ((make-infos (decls)
          (loop for decl in decls collect
@@ -77,7 +77,7 @@
 ;;;
 
 (defparameter *fibs-2*
-  (letrec 
+  (reclet 
       ((fibs (seq->stream
               (seq-cons
                1 (seq-cons
