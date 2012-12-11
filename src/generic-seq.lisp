@@ -135,13 +135,16 @@
   "Like the REMOVE-IF-NOT function but applied to the generic sequence."
   (make-seq
     (labels ((traverse (enum)
-               (cond
-                ((null enum) nil)
-                ((funcall test (funcall key (enum-car enum)))
-                 (enum-cons
-                  (enum-car enum)
-                  (traverse (enum-cdr enum))))
-                (t (traverse (enum-cdr enum))))))
+               (do ((enum enum (enum-cdr enum)))
+                   ((cond
+                     ((null enum)
+                      (return nil))
+                     ((funcall test (funcall key (enum-car enum)))
+                      (return
+                       (enum-cons
+                        (enum-car enum)
+                        (traverse (enum-cdr enum)))))
+                     (t nil))))))
       (traverse (seq-enum seq)))))
 
 (defun seq-remove-if (test seq &key (key #'identity))
