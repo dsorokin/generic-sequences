@@ -178,13 +178,9 @@ In other words, this is a monadic bind function."
     (labels ((traverse (enum)
                (if (null enum)
                    nil
-                 (labels ((traverse-2 (enum-2)
-                            (if (null enum-2)
-                                (traverse (enum-cdr enum))
-                              (enum-cons
-                               (enum-car enum-2)
-                               (traverse-2 (enum-cdr enum-2))))))
-                   (traverse-2 (seq-enum (funcall function (enum-car enum))))))))
+                 (enum-append
+                  (seq-enum (funcall function (enum-car enum)))
+                  (traverse (enum-cdr enum))))))
       (traverse (seq-enum seq)))))
 
 (defun seq-mappend (function &rest seqs)
