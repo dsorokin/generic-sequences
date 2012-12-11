@@ -81,12 +81,10 @@
       ((fibs (seq->stream
               (seq-cons
                1 (seq-cons
-                  1 (seq-map
-                     (lambda (x)
-                       (+ (first x) (second x)))
-                     (seq-zip
-                      (delay-seq fibs)
-                      (delay-seq (seq-cdr fibs)))))))))
+                  1 (seq-map 
+                     #'+
+                     (delay-seq fibs)
+                     (delay-seq (seq-cdr fibs))))))))
     fibs))
 
 ;;;
