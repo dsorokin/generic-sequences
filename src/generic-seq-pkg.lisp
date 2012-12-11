@@ -13,6 +13,7 @@
    #:enum-append
    #:make-seq
    #:delay-seq
+   #:seq
    #:seqp
    #:seq-enum
    #:seq->list

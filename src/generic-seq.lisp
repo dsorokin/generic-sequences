@@ -23,6 +23,10 @@
   (declare (ignore seq))
   nil)
 
+(deftype seq ()
+  "The generic sequence type."
+  `(satisfies seqp))
+
 (defmacro enum-cons (item enum)
   "Construct a new enumerator."
   `(cons ,item (lambda () ,enum)))
