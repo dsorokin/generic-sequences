@@ -5,6 +5,12 @@
 
 (in-package :generic-seq-test)
 
+(defvar *ht* (make-hash-table))
+
+(setf (gethash :a *ht*) 1
+      (gethash :b *ht*) 2
+      (gethash :c *ht*) 3)
+
 (deftest test-seqp-list
     (seqp '(1 2 3))
   t)
@@ -13,13 +19,25 @@
     (seqp #(1 2 3))
   t)
 
+(deftest test-seqp-hash-table
+    (seqp *ht*)
+  t)
+
 (deftest test-seq->list
     (seq->list #(1 2 3))
   (1 2 3))
 
+(deftest test-hash-table->list
+    (seq->list *ht*)
+  ((:a . 1) (:b . 2) (:c . 3)))
+
 (deftest test-seq->vector
     (seq->vector '(1 2 3))
   #(1 2 3))
+
+(deftest test-hash-table->vector
+    (seq->vector *ht*)
+  #((:a . 1) (:b . 2) (:c . 3)))
 
 (deftest test-seq-null
     (seq-null '(1 2 3))
@@ -33,21 +51,46 @@
     (seq-null #())
   t)
 
+(deftest test-seq-null-4
+    (seq-null (make-hash-table))
+  t)
+
+(deftest test-seq-null-5
+    (seq-null *ht*)
+  nil)
+
+
 (deftest test-seq-car
     (seq-car #(1 2 3))
   1)
+
+(deftest test-hash-table-car
+    (seq-car *ht*)
+  (:a . 1))
 
 (deftest test-seq-cdr
     (seq->list (seq-cdr #(1 2 3)))
   (2 3))
 
+(deftest test-hash-table-cdr
+    (seq->list (seq-cdr *ht*))
+  ((:b . 2) (:c . 3)))
+
 (deftest test-seq-cons
     (seq->list (seq-cons 1 #(2 3)))
   (1 2 3))
 
+(deftest test-hash-table-cons
+    (seq->list (seq-cons 1 *ht*))
+  (1 (:a . 1) (:b . 2) (:c . 3)))
+
 (deftest test-seq-append
     (seq->list (seq-append '(0 1) #(2 3)))
   (0 1 2 3))
+
+(deftest test-hash-table-append
+    (seq->list (seq-append '(0 1) *ht* (make-hash-table) #(2 3)))
+  (0 1 (:a . 1) (:b . 2) (:c . 3) 2 3))
 
 (deftest test-seq-equal
     (seq-equal '(1 2 3) #(1 2 3))
@@ -66,13 +109,25 @@
     (seq-length #(1 2 3))
   3)
 
+(deftest test-hash-table-length
+    (seq-length *ht*)
+  3)
+
 (deftest test-seq-elt
     (seq-elt #(1 2 3) 1)
   2)
 
+(deftest test-hash-table-elt
+    (seq-elt *ht* 1)
+  (:b . 2))
+
 (deftest test-seq-remove
     (seq->list (seq-remove 2 #(1 2 3)))
   (1 3))
+
+(deftest test-hash-table-remove
+    (seq->list (seq-remove :b *ht* :key #'car))
+  ((:a . 1) (:c . 3)))
 
 (deftest test-seq-remove-if
     (seq->list (seq-remove-if #'zerop #(1 0 2 0 3)))
@@ -149,7 +204,7 @@
             (seq->list y)))
   ((1 2) (3 4)))
 
-(deftest test-esq-member
+(deftest test-seq-member
     (seq->list (seq-member 3 #(1 2 3 4)))
   (3 4))
 
@@ -231,6 +286,12 @@
            (for x in-seq (seq-range))
            (collect x)))
   (0 1 2 3 4))
+
+(deftest test-in-seq-hash-table
+    (seq->list
+     (iter (for (key . value) in-seq *ht*)
+           (collect (cons key value))))
+  ((:a . 1) (:b . 2) (:c . 3)))
 
 (deftest test-with-seq/cc
     (seq->list
