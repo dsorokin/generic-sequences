@@ -682,3 +682,25 @@ return this element; otherwise NIL is returned."
                   (aref seq index)
                   (traverse (1+ index))))))
       (traverse 0))))
+
+;;;
+;;; Hash table
+;;;
+
+(defmethod seqp ((seq hash-table))
+  t)
+
+(defmethod seq-enum ((seq hash-table))
+  (with-hash-table-iterator (iterator seq)
+    (let ((current-length 0))
+      (labels ((traverse (index content)
+		 (if (= index current-length)
+		     (multiple-value-bind (entry-p key value)
+			 (iterator)
+		       (when entry-p
+			 (let ((pair (cons key value)))
+			   (incf current-length)
+			   (rplacd content (list pair))
+			   (enum-cons pair (traverse (1+ index) (cdr content))))))
+		     (seq-enum (cdr content)))))
+	(traverse 0 (cons nil nil))))))
