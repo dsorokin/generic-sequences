@@ -37,7 +37,10 @@
 
 (defmacro enum-cdr (enum)
   "Return the CDR part."
-  `(funcall (cdr ,enum)))
+  (let ((enum-cdr (gensym "ENUM-CDR")))
+   `(let ((,enum-cdr (cdr ,enum)))
+      (when ,enum-cdr
+	(funcall ,enum-cdr)))))
 
 (defun enum-append-2 (enum-1 delayed-enum-2)
   "Append two enumerators."
@@ -659,11 +662,12 @@ return this element; otherwise NIL is returned."
 
 (defmethod seq-enum ((seq list))
   (labels ((traverse (list)
-             (if (null list)
-                 nil
-               (enum-cons
-                (car list)
-                (traverse (cdr list))))))
+             (when list
+	       (if (consp list)
+		   (enum-cons
+		    (car list)
+		    (traverse (cdr list)))
+		   list))))
     (traverse seq)))
 
 ;;;

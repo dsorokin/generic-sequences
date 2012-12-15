@@ -225,12 +225,42 @@
     (seq->list (seq-interpose :a '(1 2 3 4)))
   (1 :a 2 :a 3 :a 4))
 
-(deftest test-in-seq
-    (seq->list
-     (iter (for n from 1 to 5)
-           (for x in-seq (seq-range))
-           (collect x)))
+(deftest test-in-seq-1
+    (iter (for n from 1 to 5)
+          (for x in-seq (seq-range))
+          (collect x))
   (0 1 2 3 4))
+
+(deftest test-in-seq-2
+    (iter (for (a (b (c)) d) in-seq '((1 (2 (3)) 4) #(5 #(6 #(7)) 8)))
+          (collect (list a b c d)))
+  ((1 2 3 4) (5 6 7 8)))
+
+(deftest test-in-seq-3
+    (iter (for (a b (c) d) in-seq '((1 2) #(3 4)))
+          (collect (list a b c d)))
+  ((1 2 nil nil) (3 4 nil nil)))
+
+(deftest test-in-seq-4
+    (iter (for (a b) in-seq (list (seq-range) (seq-range :start 10) (seq-range :start 20)))
+          (collect (list a b)))
+  ((0 1) (10 11) (20 21)))
+
+(deftest test-on-seq-1
+    (iter (for (a b) on-seq '(1 2 3))
+          (collect (list a b)))
+  ((1 2) (2 3) (3 nil)))
+
+(deftest test-on-seq-2
+    (iter (for (a b) on-seq (seq-range))
+          (for i from 0 to 4)
+          (collect (list a b)))
+  ((0 1) (1 2) (2 3) (3 4) (4 5)))
+
+(deftest test-on-seq-3
+    (iter (for ((i) (j)) on-seq (list (seq-range) (seq-range :start 10)))
+          (collect (list i j)))
+  ((0 10) (10 nil)))
 
 (deftest test-with-seq/cc
     (seq->list
