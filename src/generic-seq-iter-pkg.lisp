@@ -6,4 +6,5 @@
 (defpackage :generic-seq-iter
   (:use :cl :generic-seq :iter)
   (:nicknames #:gen-seq-iter)
-  (:export #:in-seq))
+  (:export #:in-seq
+	   #:on-seq))
