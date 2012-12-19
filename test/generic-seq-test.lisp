@@ -149,6 +149,18 @@
             (seq->list y)))
   ((1 2) (3 4)))
 
+(deftest test-seq-count
+    (seq-count 1 #(1 2 -1 3 1 4 8 9 0) :key #'abs)
+  3)
+
+(deftest test-seq-count-if
+    (seq-count-if (lambda (x) (= x 1)) #(1 2 -1 3 1 4 8 9 0) :key #'abs)
+  3)
+
+(deftest test-seq-count-if-not
+    (seq-count-if-not (lambda (x) (/= x 1)) #(1 2 -1 3 1 4 8 9 0) :key #'abs)
+  3)
+
 (deftest test-seq-member
     (seq->list (seq-member 3 #(1 2 3 4)))
   (3 4))

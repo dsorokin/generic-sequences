@@ -45,6 +45,9 @@
    #:seq-split
    #:seq-split-if
    #:seq-split-if-not
+   #:seq-count
+   #:seq-count-if
+   #:seq-count-if-not
    #:seq-member
    #:seq-member-if
    #:seq-member-if-not

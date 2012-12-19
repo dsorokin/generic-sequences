@@ -4,7 +4,7 @@
 ;;;; Licensed under MIT. See LICENSE for details.
 
 (defsystem :generic-sequences
-  :version "0.1"
+  :version "0.1.1"
   :description "Generic sequences for Common Lisp."
   :author "David Sorokin"
   :licence "MIT"

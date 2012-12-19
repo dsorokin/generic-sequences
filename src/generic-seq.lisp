@@ -650,6 +650,26 @@ return this element; otherwise NIL is returned."
     (seq-notevery-1 (lambda (xs) (apply predicate xs))
                     (apply #'seq-zip seqs))))
 
+(defun seq-count (item seq &key (test #'eql) (key #'identity))
+  "Count and return the number of elements in the sequence that satisfy the test."
+  (do ((enum (seq-enum seq) (enum-cdr enum))
+       (acc 0))
+      ((null enum) acc)
+    (when (funcall test item (funcall key (enum-car enum)))
+      (incf acc))))
+
+(defun seq-count-if (predicate seq &key (key #'identity))
+  "Count and return the number of elements in the sequence that satisfy the test."
+  (do ((enum (seq-enum seq) (enum-cdr enum))
+       (acc 0))
+      ((null enum) acc)
+    (when (funcall predicate (funcall key (enum-car enum)))
+      (incf acc))))
+
+(defun seq-count-if-not (predicate seq &key (key #'identity))
+  "Count and return the number of elements in the sequence that satisfy the test."
+  (seq-count-if (complement predicate) seq :key key))
+
 ;;;
 ;;; List
 ;;;
