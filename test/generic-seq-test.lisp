@@ -149,7 +149,7 @@
             (seq->list y)))
   ((1 2) (3 4)))
 
-(deftest test-esq-member
+(deftest test-seq-member
     (seq->list (seq-member 3 #(1 2 3 4)))
   (3 4))
 
