@@ -5,6 +5,8 @@
 
 (defsystem generic-sequences-test
   :description "Unit tests for the generic sequences."
+  :author "David Sorokin"
+  :licence "MIT"
   :depends-on (generic-sequences
                generic-sequences-iterate
                generic-sequences-cont
